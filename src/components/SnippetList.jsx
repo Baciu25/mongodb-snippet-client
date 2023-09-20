@@ -1,27 +1,21 @@
-import { useParams } from "react-router-dom";
-
-// get id from params
-
-// =======================
 import { useEffect, useState } from "react";
 
-export default function SnippetDetail() {
-  let { snippet_id } = useParams();
-  const [snippet, setSnippet] = useState();
+export default function SnippetList() {
+  const [snippets, setSnippets] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:9000/snippets/" + snippet_id)
+    fetch("http://localhost:9000/snippets")
       .then((res) => res.json())
-      .then((data) => setSnippet(data));
+      .then((data) => setSnippets(data));
   }, []);
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
-      {snippet ? (
+      {snippets.map((snippet) => (
         <div
           style={{ border: "1px solid black", margin: "10px" }}
           key={snippet.id}
         >
-          <a href={`/${snippet.id}`}></a>
+          <a href={`/${snippet.id}`}>{snippet.title}</a>
           <p>
             <span>{snippet.title}</span>
           </p>
@@ -29,11 +23,9 @@ export default function SnippetDetail() {
             <span>{snippet.id}</span>
           </p>
           <>{new Date(snippet.modifiedAt).toLocaleDateString()}</>
-          <p>{snippet.content}...</p>
+          <p>{snippet.content.substring(0, 40)}...</p>
         </div>
-      ) : (
-        <p>loading...</p>
-      )}
+      ))}
     </div>
   );
 }

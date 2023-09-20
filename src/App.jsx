@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import SnippetDetail from "./components/SnippetDetail";
+import Home from "./components/Home";
 import "./App.css";
 
 function App() {
@@ -7,7 +8,7 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<h1>test</h1>} />
+          <Route path="/" element={<Home />} />
           <Route path="/:snippet_id" element={<SnippetDetail />} />
         </Routes>
       </BrowserRouter>
