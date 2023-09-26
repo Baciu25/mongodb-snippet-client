@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 // =======================
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import CodeBlock from "./CodeBlock";
 
 export default function SnippetDetail() {
   const history = useNavigate();
@@ -16,6 +17,10 @@ export default function SnippetDetail() {
       .then((res) => res.json())
       .then((data) => setSnippet(data));
   }, []);
+
+  const handleEdit = (value) => {
+    setSnippet({ ...snippet, content: value });
+  };
 
   const handleDelete = () => {
     fetch("http://localhost:9000/snippets/" + snippet.shortId, {
@@ -64,17 +69,15 @@ export default function SnippetDetail() {
             <span>{snippet.id}</span>
           </p>
           <p>{new Date(snippet.updatedAt).toLocaleDateString()}</p>
-          <input
-            textarea
-            value={snippet.content}
-            onChange={(e) =>
-              setSnippet({ ...snippet, content: e.target.value })
-            }
-          />
 
           <textarea
             value={snippet.title}
             onChange={(e) => setSnippet({ ...snippet, title: e.target.value })}
+          />
+
+          <CodeBlock
+            code={snippet.content || "This snippet is empty."}
+            handleEdit={handleEdit}
           />
           <button onClick={handleSave}>Save</button>
           <button onClick={handleDelete}>Delete</button>
