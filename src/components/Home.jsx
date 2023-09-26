@@ -1,12 +1,13 @@
-import SnippetCreationForm from "./SnippetCreationForm";
+import Editor from "./Editor";
 import SnippetList from "./SnippetList";
 
 const Home = () => {
   return (
     <>
-      <h1>Welcome to code dumpster</h1>
-      <SnippetCreationForm />
-      <SnippetList />
+      <Editor />
+      <div className="fixed top-20 right-5">
+        <SnippetList />
+      </div>
     </>
   );
 };

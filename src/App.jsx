@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import SnippetDetail from "./components/SnippetDetail";
+
 import Home from "./components/Home";
 import "./App.css";
 
@@ -9,11 +9,10 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/:snippet_id" element={<SnippetDetail />} />
+
+          <Route path="/:snippet_id" element={<Home />} />
         </Routes>
       </BrowserRouter>
-
-      <p className="read-the-docs">I'm on every page</p>
     </>
   );
 }

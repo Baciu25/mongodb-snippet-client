@@ -14,7 +14,6 @@ export default function SnippetCreationForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(titleRef.current.value, contentRef.current.value);
 
     fetch("http://localhost:9000/snippets/", {
       method: "POST",
