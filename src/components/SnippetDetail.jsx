@@ -4,8 +4,10 @@ import { useParams } from "react-router-dom";
 
 // =======================
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function SnippetDetail() {
+  const history = useNavigate();
   let { snippet_id } = useParams();
   const [snippet, setSnippet] = useState();
 
@@ -14,6 +16,39 @@ export default function SnippetDetail() {
       .then((res) => res.json())
       .then((data) => setSnippet(data));
   }, []);
+
+  const handleDelete = () => {
+    fetch("http://localhost:9000/snippets/" + snippet.shortId, {
+      method: "DELETE",
+    }).then((httpResponse) => {
+      if (httpResponse.ok) {
+        history("/");
+      } else {
+        alert("Sorry,something went wrong.Please try again later.");
+      }
+    });
+  };
+
+  const handleSave = () => {
+    fetch("http://localhost:9000/snippets/" + snippet.shortId, {
+      method: "put",
+
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        title: snippet.title,
+        content: snippet.content,
+      }),
+    }).then((httpResponse) => {
+      if (httpResponse.ok) {
+        alert("Saved the changes successfully!");
+      } else {
+        alert("Sorry,something went wrong.Please try again later.");
+      }
+    });
+  };
+
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
       {snippet ? (
@@ -28,8 +63,21 @@ export default function SnippetDetail() {
           <p>
             <span>{snippet.id}</span>
           </p>
-          <>{new Date(snippet.modifiedAt).toLocaleDateString()}</>
-          <p>{snippet.content}...</p>
+          <p>{new Date(snippet.updatedAt).toLocaleDateString()}</p>
+          <input
+            textarea
+            value={snippet.content}
+            onChange={(e) =>
+              setSnippet({ ...snippet, content: e.target.value })
+            }
+          />
+
+          <textarea
+            value={snippet.title}
+            onChange={(e) => setSnippet({ ...snippet, title: e.target.value })}
+          />
+          <button onClick={handleSave}>Save</button>
+          <button onClick={handleDelete}>Delete</button>
         </div>
       ) : (
         <p>loading...</p>
