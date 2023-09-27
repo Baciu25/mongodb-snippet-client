@@ -11,7 +11,7 @@ export default function Navbar() {
   const [snippet, setSnippet] = editor;
 
   const sendDeleteSnippetRequest = () => {
-    fetch("http://localhost:9000/snippets/" + snippet.shortId, {
+    fetch(import.meta.env.VITE_SNIPPET_API + "/snippets/" + snippet.shortId, {
       method: "delete",
     }).then((httpResponse) => {
       if (httpResponse.ok) {
@@ -25,7 +25,7 @@ export default function Navbar() {
   };
 
   const sendUpdateSnippetRequest = () => {
-    fetch("http://localhost:9000/snippets/" + snippet.shortId, {
+    fetch(import.meta.env.VITE_SNIPPET_API + "/snippets/" + snippet.shortId, {
       method: "put",
       headers: {
         "Content-Type": "application/json",
@@ -51,7 +51,7 @@ export default function Navbar() {
   const sendCreateSnippetRequest = (e) => {
     e.preventDefault();
 
-    fetch("http://localhost:9000/snippets", {
+    fetch(import.meta.env.VITE_SNIPPET_API + "/snippets", {
       method: "post",
       headers: {
         "Content-Type": "application/json",

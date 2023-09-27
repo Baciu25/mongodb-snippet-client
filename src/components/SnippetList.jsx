@@ -8,7 +8,7 @@ export default function SnippetList() {
   const [snippets, setSnippets] = snippetList;
 
   useEffect(() => {
-    fetch("http://localhost:9000/snippets")
+    fetch(import.meta.env.VITE_SNIPPET_API + "/snippets")
       .then((res) => res.json())
       .then((data) => {
         console.log(data);

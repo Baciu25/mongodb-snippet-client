@@ -20,7 +20,7 @@ export default function Editor() {
     if (!snippet_id) {
       return;
     }
-    fetch("http://localhost:9000/snippets/" + snippet_id)
+    fetch(import.meta.env.VITE_SNIPPET_API + "/snippets/" + snippet_id)
       .then((res) => res.json())
       .then((data) => setSnippet(data));
   }, []);
