@@ -50,7 +50,7 @@ export default function Navbar() {
 
   const sendCreateSnippetRequest = (e) => {
     e.preventDefault();
-
+    console.log(import.meta.env.VITE_SNIPPET_API);
     fetch(import.meta.env.VITE_SNIPPET_API + "/snippets", {
       method: "post",
       headers: {
