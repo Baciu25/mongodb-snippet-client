@@ -7,9 +7,9 @@ import { javascript } from "@codemirror/lang-javascript";
 const extensions = [javascript({ jsx: true })];
 
 export default function CodeBlock({ code, handleEdit }) {
-  const onChange = React.useCallback((value, viewUpdate) => {
+  const onChange = (value) => {
     handleEdit(value);
-  }, []);
+  };
 
   return (
     <CodeMirror
