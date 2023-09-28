@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import SnippetListItem from "./SnippetListItem";
-import { SnippetContext } from "../SnippetContext";
+import { SnippetContext } from "../contexts/SnippetContext";
 import { useContext } from "react";
 
 export default function SnippetList() {
@@ -17,7 +17,7 @@ export default function SnippetList() {
   }, []);
 
   return (
-    <div className="flex flex-col h-[60vh] w-[210px] bg-red-300 rounded-xl p-3">
+    <div className="flex flex-col h-[80vh] w-[210px] bg-gray-100 rounded-xl p-3 overflow-hidden hover:overflow-y-scroll gap-1">
       {snippets.map((snippet) => (
         <SnippetListItem snippet={snippet} key={snippet.shortId} />
       ))}

@@ -1,8 +1,7 @@
 import { useParams } from "react-router-dom";
 
 import CodeBlock from "./CodeBlock";
-import { SnippetContext } from "../SnippetContext";
-
+import { SnippetContext } from "../contexts/SnippetContext";
 import { useContext, useEffect } from "react";
 // its the way we access lifecycle events ( componented started, data changed, component dying )
 
