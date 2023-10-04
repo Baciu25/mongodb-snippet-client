@@ -5,22 +5,20 @@ import "react-toastify/dist/ReactToastify.css";
 
 export const SnippetContext = createContext(null);
 
+const emptySnippetState = {
+  title: "",
+  content: "",
+  language: AVAILABLE_LANGUAGES.plaintext,
+};
+
 export const SnippetProvider = ({ children }) => {
   const history = (path) => window.history.pushState({}, "", path);
   const notify = (msg) => toast(msg);
   const snippet_id = window.location.pathname.split("/")[1];
 
   // for the editor + navbar
-  const [snippet, setSnippet] = useState({
-    title: "",
-    content: "",
-    language: AVAILABLE_LANGUAGES.javascript,
-  });
-  const [snippetDIFF, setSnippetDIFF] = useState({
-    title: "",
-    content: "",
-    language: AVAILABLE_LANGUAGES.javascript,
-  });
+  const [snippet, setSnippet] = useState(emptySnippetState);
+  const [snippetDIFF, setSnippetDIFF] = useState(emptySnippetState);
 
   const [unsavedState, setUnsavedState] = useState(false);
   const [snippets, setSnippets] = useState([]);
@@ -35,14 +33,7 @@ export const SnippetProvider = ({ children }) => {
     } else {
       setUnsavedState(false);
     }
-  }, [
-    snippet.title,
-    snippet.content,
-    snippet.language,
-    snippetDIFF.title,
-    snippetDIFF.content,
-    snippetDIFF.language,
-  ]);
+  }, [snippet, snippetDIFF]);
 
   useEffect(() => {
     if (snippet_id) {
@@ -59,6 +50,7 @@ export const SnippetProvider = ({ children }) => {
       .then((data) => {
         console.log(data);
         setSnippets(data);
+        setSnippetDIFF(data);
       });
   }, []);
 
@@ -67,17 +59,10 @@ export const SnippetProvider = ({ children }) => {
       method: "delete",
     }).then((httpResponse) => {
       if (httpResponse.ok) {
-        setSnippet({
-          title: "",
-          content: "",
-          language: AVAILABLE_LANGUAGES.plaintext,
-        });
+        setSnippet(emptySnippetState);
         setUnsavedState(false);
-        setSnippetDIFF({
-          title: "",
-          content: "",
-          language: AVAILABLE_LANGUAGES.plaintext,
-        });
+        setSnippetDIFF(emptySnippetState);
+        setSnippets(snippets.filter((s) => s.shortId !== snippet.shortId));
         history("/");
         notify("Deleted successfully!");
       } else {
@@ -109,7 +94,10 @@ export const SnippetProvider = ({ children }) => {
       .then((updatedSnippet) => {
         setSnippet(updatedSnippet);
         setSnippetDIFF(updatedSnippet);
-        setUnsavedState(false);
+        setSnippets([
+          updatedSnippet,
+          ...snippets.filter((s) => s.shortId !== updatedSnippet.shortId),
+        ]);
       });
   };
 
@@ -132,6 +120,7 @@ export const SnippetProvider = ({ children }) => {
         setSnippet(newlyCreatedSnippet);
         setUnsavedState(false);
         setSnippetDIFF(newlyCreatedSnippet);
+        setSnippets([newlyCreatedSnippet, ...snippets]);
 
         history("/" + newlyCreatedSnippet.shortId);
         notify("Snippet successfully created!");
@@ -139,11 +128,9 @@ export const SnippetProvider = ({ children }) => {
   };
 
   const resetFields = () => {
-    setSnippet({
-      title: "",
-      content: "",
-      language: AVAILABLE_LANGUAGES.plaintext,
-    });
+    setSnippet(emptySnippetState);
+    setSnippetDIFF(emptySnippetState);
+
     history("/");
   };
 
@@ -188,6 +175,7 @@ export const SnippetProvider = ({ children }) => {
         sendCreateSnippetRequest,
         sendDeleteSnippetRequest,
         sendUpdateSnippetRequest,
+        emptySnippetState,
         resetFields,
 
         snippetList: [organisedSnippets(), setSnippets],
