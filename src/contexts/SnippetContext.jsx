@@ -27,8 +27,7 @@ export const SnippetProvider = ({ children }) => {
 
   useEffect(() => {
     if (
-      snippet.title ||
-      snippetDIFF.title ||
+      snippet.title !== snippetDIFF.title ||
       snippet.content !== snippetDIFF.content ||
       snippet.language !== snippetDIFF.language
     ) {
